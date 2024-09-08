@@ -1,0 +1,65 @@
+﻿@using SchoolManagement.Model
+@model List<StudentRequest>
+
+
+
+
+        <div class="col-md-12 ">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Student Apply For School </h4>
+                    <p class="card-description">
+                        Request
+                    </p>
+                       <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>StudentRequestId</th>
+                                    <th>StudentName</th>
+                                    <th>Email</th>
+                                    <th>Contect</th>
+                                    <th>standard</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                    @foreach(var a in Model)
+                    {
+                            <tbody>
+                                <tr>
+                                    <td>@a.studentRequestId</td>
+                                    <td>@a.StudentName</td>
+                                    <td>@a.StudentEmail</td>
+                                    <td>@a.Contect</td>
+                                    <td>@a.standard</td>
+                                <td><input type="button" class="btn btn-warning btn-rounded btn-fw" value="Approve" onclick="approveStudent(@a.studentRequestId)" /></td>
+                                   
+                                </tr>
+                               
+                            </tbody>
+                    } 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script type="text/javascript">
+    function approveStudent(studentRequestId) {
+        $.ajax({
+            url: '/Admin/StudentApprove', // The controller action to hit
+            type: 'POST', // HTTP method
+            data: {
+                id: studentRequestId // Passing studentRequestId as parameter
+            },
+            success: function (response) {
+                // Handle success response
+                alert("Student approved successfully!");
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                alert("Error while approving student: " + error);
+            }
+        });
+    }
+</script>
