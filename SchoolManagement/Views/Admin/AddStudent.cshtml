@@ -1,0 +1,49 @@
+﻿@using SchoolManagement.Model
+@model AddStudent 
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Add Student</h4>
+                        <p class="card-description">
+                           
+                        </p>
+                        <form method="post" class="forms-sample">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">StudentUser</label>
+                                <input type="text" class="form-control" asp-for="StudentUser" id="exampleInputUsername1" placeholder="StudentUser">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Studentpass</label>
+                                <input type="text" class="form-control" asp-for="Studentpass" id="exampleInputEmail1" placeholder="Studentpass">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">fullname</label>
+                                <input type="text" class="form-control" asp-for="fullname" id="exampleInputPassword1" placeholder="fullname">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputConfirmPassword1">Email</label>
+                                <input type="email" class="form-control" asp-for="Email" id="exampleInputConfirmPassword1" placeholder="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="text" class="form-control" asp-for="Contect" id="exampleInputPassword1" placeholder="Contect">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Standard</label>
+                                <input type="text" class="form-control" asp-for="Standard" id="exampleInputPassword1" placeholder="Standard">
+                            </div>
+                            <input type="submit" class="btn btn-primary mr-2" value="Submit">
+                            <button class="btn btn-light">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

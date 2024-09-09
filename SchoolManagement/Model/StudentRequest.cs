@@ -15,6 +15,5 @@ namespace SchoolManagement.Model
          
         public string standard { get; set; }
 
-
     }
 }

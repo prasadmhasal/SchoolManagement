@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SchoolManagement.Model;
 using System.Net.Mail;
 using System.Net;
+using System.Text;
 
 namespace SchoolManagement.Controllers
 {
@@ -41,14 +42,18 @@ namespace SchoolManagement.Controllers
         public IActionResult StudentApprove(int id)
         {
 
-            string url = $"https://localhost:44379/api/Admin/StudentRequestDelete/{id}";
-            HttpResponseMessage response = client.DeleteAsync(url).Result;
+            string url = $"https://localhost:44379/api/Admin/StudentRequestDelete/";
+            HttpResponseMessage response = client.DeleteAsync(url+id).Result;
             if (response.IsSuccessStatusCode)
             {
                 SendEmail();
                 return RedirectToAction("StudentApplyRequest");
             }
-            return View("StudentApplyRequest");
+            else
+            {
+            }
+           return RedirectToAction("StudentApplyRequest");
+            
         }
 
         public ActionResult SendEmail()
@@ -96,5 +101,24 @@ namespace SchoolManagement.Controllers
             return View();
         }
 
+        public IActionResult AddStudent()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddStudent(AddStudent a)
+        {
+            a.AddMisstiondate = "empty";
+            string url = "https://localhost:44379/api/Admin/AddStudent";
+            var jsondata = JsonConvert.SerializeObject(a);
+            StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Addstudent");
+            }
+            return View();
+        }
     }
 }
