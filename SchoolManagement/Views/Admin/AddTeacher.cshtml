@@ -1,0 +1,71 @@
+﻿@using SchoolManagement.Model
+@model AddTeacher
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Add Teacher </h4>
+                        <p class="card-description">
+
+                        </p>
+                        <form method="post" class="forms-sample">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">TeacherUser</label>
+                                <input type="text" class="form-control" asp-for="TeacherUser" id="exampleInputUsername1" placeholder="TeacherUser">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Teacherpass</label>
+                                <input type="text" class="form-control" asp-for="Teacherpass" id="exampleInputEmail1" placeholder="Teacherpass">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">TecherName</label>
+                                <input type="text" class="form-control" asp-for="TecherName" id="exampleInputPassword1" placeholder="fullname">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Subject</label>
+                                <input type="text" class="form-control" asp-for="Subject" id="exampleInputPassword1" placeholder="Subject">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Standard</label>
+                                <select class="form-control" asp-for="Standard" id="exampleInputPassword1">
+                                    <option value="">Select Standard</option>
+                                    <option value="5th">5th</option>
+                                    <option value="6th">6th</option>
+                                    <option value="7th">7th</option>
+                                    <option value="8th">8th</option>
+                                    <option value="9th">9th</option>
+                                    <option value="10th">10th</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputConfirmPassword1">TeacherEmail</label>
+                                <input type="email" class="form-control" asp-for="TeacherEmail" id="exampleInputConfirmPassword1" placeholder="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Contect</label>
+                                <input type="text" class="form-control" asp-for="Contact" id="exampleInputPassword1" placeholder="Contect">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputConfirmPassword1">Qualification</label>
+                                <input type="text" class="form-control" asp-for="qualification" id="exampleInputConfirmPassword1" placeholder="Qualification">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Salary Per Month</label>
+                                <input type="text" class="form-control" asp-for="Salary" id="exampleInputPassword1" placeholder="Salary">
+                            </div>
+                            <input type="submit" class="btn btn-primary mr-2" value="Submit">
+                            <button class="btn btn-light">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

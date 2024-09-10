@@ -120,5 +120,31 @@ namespace SchoolManagement.Controllers
             }
             return View();
         }
+
+        public IActionResult AddTeacher()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddTeacher(AddTeacher t)
+        {
+            t.Joindate = "Empty";
+            string url = "https://localhost:44379/api/Admin/AddTeacher";
+            var jsondata = JsonConvert.SerializeObject(t);
+            StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(url,content).Result;
+            if (response.IsSuccessStatusCode) 
+            {
+                
+                return RedirectToAction("AddTeacher");
+            }
+            return View();
+        }
+
+        public IActionResult LeaveRequest()
+        {
+            return View();
+        }
     }
 }
