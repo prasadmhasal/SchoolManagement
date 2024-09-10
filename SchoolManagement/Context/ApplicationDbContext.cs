@@ -12,6 +12,7 @@ namespace SchoolManagement.Context
         public DbSet<AddStudent> Student {  get; set; }
 
         public DbSet<Users> Users { get; set; }
+        public DbSet<AddLibrarian> Librarian { get; set; }
 
 
      }
