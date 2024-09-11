@@ -23,7 +23,18 @@ namespace SchoolManagement.Controllers
            
         }
 
-        public IActionResult StudentApplyRequest()
+		public IActionResult SignIn()
+		{
+			return View();
+		}
+
+        [HttpPost]
+        public IActionResult SignIn (Users u )   
+        {
+            return View();
+        }
+
+		public IActionResult StudentApplyRequest()
         {
             List<StudentRequest> student = new List<StudentRequest>();
             string url = "https://localhost:44379/api/Admin/GetStudentRequest";
@@ -47,7 +58,8 @@ namespace SchoolManagement.Controllers
             if (response.IsSuccessStatusCode)
             {
                 SendEmail();
-                return RedirectToAction("StudentApplyRequest");
+                TempData["StudentApprove"] = "Student Approve And Email Sended ";
+              
             }
             else
             {
@@ -66,7 +78,7 @@ namespace SchoolManagement.Controllers
                 string body = "This is a test email sent from an ASP.NET MVC application.";
 
                
-                var fromAddress = new MailAddress("prasadmhasal@gmail.com.com", "Prasad");
+                var fromAddress = new MailAddress("prasadmhasal@gmail.com", "Prasad");
                 var toAddress = new MailAddress(toEmail);
                 string fromPassword = "fxjuqdrhzmmeksyq"; 
 
@@ -136,7 +148,7 @@ namespace SchoolManagement.Controllers
             HttpResponseMessage response = client.PostAsync(url,content).Result;
             if (response.IsSuccessStatusCode) 
             {
-                
+                TempData["AddTeacher"] = "Successfully Added Teacher ";
                 return RedirectToAction("AddTeacher");
             }
             return View();
@@ -146,5 +158,30 @@ namespace SchoolManagement.Controllers
         {
             return View();
         }
+
+
+        public IActionResult AddLabrarian() 
+        { 
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddLabrarian(AddLibrarian l)
+        {
+            l.Joindate = "Empty";
+            string url = $"https://localhost:44379/api/Admin/Addlabrarian";
+            var jsondata = JsonConvert.SerializeObject(l);
+            StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/Json");
+            HttpResponseMessage response = client.PostAsync(url , content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Addlabrarian"] = "Successfully Added Labrarian ";
+                return RedirectToAction("AddLabrarian");
+            }
+            return View();
+        }
+
+        
+       
     }
 }

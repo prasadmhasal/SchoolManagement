@@ -1,7 +1,7 @@
 ﻿@using SchoolManagement.Model
-@model AddStudent 
+@model AddLibrarian
 
-<partial name="Notification" />
+<partial name="Notification"/>
 
 <div class="main-panel">
     <div class="content-wrapper">
@@ -9,22 +9,22 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Add Student</h4>
+                        <h4 class="card-title">Add Labrarian</h4>
                         <p class="card-description">
-                           
+
                         </p>
                         <form method="post" class="forms-sample">
                             <div class="form-group">
-                                <label for="exampleInputUsername1">StudentUser</label>
-                                <input type="text" class="form-control" asp-for="StudentUser" id="exampleInputUsername1" placeholder="StudentUser">
+                                <label for="exampleInputUsername1">LibrarianUser</label>
+                                <input type="text" class="form-control" asp-for="LibrarianUser" id="exampleInputUsername1" placeholder="LibrarianUser">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Studentpass</label>
-                                <input type="text" class="form-control" asp-for="Studentpass" id="exampleInputEmail1" placeholder="Studentpass">
+                                <label for="exampleInputEmail1">Librarianpass</label>
+                                <input type="text" class="form-control" asp-for="Librarianpass" id="exampleInputEmail1" placeholder="Librarianpass">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">fullname</label>
-                                <input type="text" class="form-control" asp-for="fullname" id="exampleInputPassword1" placeholder="fullname">
+                                <label for="exampleInputPassword1">LibrarianName</label>
+                                <input type="text" class="form-control" asp-for="LibrarianName" id="exampleInputPassword1" placeholder="LibrarianName">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputConfirmPassword1">Email</label>
@@ -32,12 +32,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Contect</label>
-                                <input type="text" class="form-control" asp-for="Contect" id="exampleInputPassword1" placeholder="Contect">
+                                <label for="exampleInputPassword1">Contact</label>
+                                <input type="text" class="form-control" asp-for="Contact" id="exampleInputPassword1" placeholder="Contect">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Standard</label>
-                                <input type="text" class="form-control" asp-for="Standard" id="exampleInputPassword1" placeholder="Standard">
+                                <label for="exampleInputPassword1">Salary</label>
+                                <input type="text" class="form-control" asp-for="Salary" id="exampleInputPassword1" placeholder="Salary">
                             </div>
                             <input type="submit" class="btn btn-primary mr-2" value="Submit">
                             <button class="btn btn-light">Cancel</button>

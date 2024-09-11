@@ -12,6 +12,12 @@ namespace SchoolManagement.Model
         public string Librarianpass { get; set; }
 
         public string LibrarianName { get; set; }
+
+        public string Email { get; set; }
+
+        public long Contact { get; set; }
         public double Salary { get; set; }
+
+        public string Joindate  { get; set; }
     }
 }
