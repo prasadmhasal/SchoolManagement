@@ -31,7 +31,47 @@ namespace SchoolManagement.Controllers
         [HttpPost]
         public IActionResult SignIn (Users u )   
         {
-            return View();
+            u.Urole = "empty";
+            string url = $"https://localhost:44379/api/Admin/SignIn";
+            var jsondata = JsonConvert.SerializeObject(u); 
+            StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+               
+                var responseData = response.Content.ReadAsStringAsync().Result;
+                var userData = JsonConvert.DeserializeObject<Users>(responseData); // Replace `Users` with your expected return type
+
+                
+                if (userData.Urole == "Student")
+                {
+                    
+                    return RedirectToAction("StudentDashboard", "Index");
+                }
+                else if (userData.Urole == "Teacher")
+                {
+                   
+                    return RedirectToAction("TeacherDashboard", "Index");
+                }
+                else if (userData.Urole == "Admin")
+                {
+                   
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                   
+                    TempData["SignInError"] = "Unknown role!";
+                    return RedirectToAction("SignIn");
+                }
+            }
+            else
+            {
+                
+                TempData["SignInError"] = "Invalid username or password";
+                return RedirectToAction("SignIn");
+            }
+           
         }
 
 		public IActionResult StudentApplyRequest()
