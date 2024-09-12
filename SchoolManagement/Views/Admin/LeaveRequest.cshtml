@@ -1,1 +1,59 @@
-﻿
+﻿@using SchoolManagement.Model
+@model List<TeacherLeaveRequest>
+
+
+<partial name="Notification" />
+<div class="col-md-12 ">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Student Apply For School </h4>
+            <p class="card-description">
+                Request
+            </p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Start Date</th>
+                            <th>End Date </th>
+                            <th>Subject</th>
+                            <th>Reason</th>
+                            <th>Action </th>
+                            
+                        </tr>
+                    </thead>
+                    @foreach (var a in Model)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>@a.UserName</td>
+                                <td>@a.StartDate</td>
+                                <td>@a.EndDate</td>
+                                <td>@a.Subject</td>
+                                <td>@a.Reason</td>
+                                <td>
+                                    <a asp-controller="Admin" asp-action="LeaveStatus" asp-route-id="@a.TeacherId" asp-route-status="Approve">
+
+                                        <input type="button" class="btn btn-warning btn-rounded btn-fw" value="Approve"  /> 
+                                    </a>
+                                    <a asp-controller="Admin" asp-action="LeaveStatus" asp-route-id="@a.TeacherId" asp-route-status="Reject">
+                                       <input type="button" class="btn btn-danger btn-rounded btn-fw" value="Reject"  /> 
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
