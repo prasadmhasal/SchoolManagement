@@ -56,7 +56,7 @@ namespace SchoolManagement.Controllers
                     HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                     HttpContext.Session.SetString("UserName", userData.UserName);
                     HttpContext.Session.SetString("Urole", userData.Urole);
-                    return RedirectToAction("Student", "Index");
+                    return RedirectToAction("Index", "Student");
                 }
                 else if (userData.Urole == "Teacher")
                 {
@@ -68,7 +68,7 @@ namespace SchoolManagement.Controllers
                     HttpContext.Session.SetString("UserName", userData.UserName);
                     HttpContext.Session.SetString("Urole", userData.Urole);
                     
-                    return RedirectToAction("Teacher", "Index");
+                    return RedirectToAction("Index", "Teacher");
                 }
                 else if (userData.Urole == "Admin")
                 {
@@ -80,6 +80,17 @@ namespace SchoolManagement.Controllers
                     HttpContext.Session.SetString("UserName", userData.UserName);
                     HttpContext.Session.SetString("Urole", userData.Urole);
                     return RedirectToAction("Index");
+                }
+                else if (userData.Urole == "labrarian")
+                {
+                    var identity = new ClaimsIdentity(new[] {
+                   new Claim(ClaimTypes.Name,userData.UserName)},
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    HttpContext.Session.SetString("UserName", userData.UserName);
+                    HttpContext.Session.SetString("Urole", userData.Urole);
+                    return RedirectToAction("Index","Librarian");
                 }
                 else
                 {
@@ -282,16 +293,122 @@ namespace SchoolManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult LeaveStatus(int id , string status)
+        public IActionResult LeaveStatus(int Id, string status )
         {
-            if (status == "Approve")
+           
+            string url = $"https://localhost:44379/api/Admin/PostLeaveRequest/";
+            HttpResponseMessage response = client.DeleteAsync(url + Id).Result;
+
+            if (response.IsSuccessStatusCode)
             {
-                string url = "";
+                if (status == "Approve")
+                {
+                    ApproveEmail();
+                    return RedirectToAction("LeaveRequest");
+                }
+                else if (status == "Rejected")
+                {
+                    RejectEmail();
+                }
+
+               
+                return RedirectToAction("LeaveRequest");
             }
 
-        return View(); 
+
+            return RedirectToAction("LeaveRequest");
         }
 
+
+        public ActionResult ApproveEmail()
+        {
+            try
+            {
+
+                string toEmail = "prasadmhasal@gmail.com";
+                string subject = "Test Email from ASP.NET MVC";
+                string body = $"Hii student you are addmited in our school your portal UserName :   And Password ";
+
+
+                var fromAddress = new MailAddress("prasadmhasal@gmail.com", "Prasad");
+                var toAddress = new MailAddress(toEmail);
+                string fromPassword = "fxjuqdrhzmmeksyq";
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+
+
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+
+                    smtp.Send(message);
+                }
+
+                ViewBag.EmailStatus = "Email sent successfully!";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.EmailStatus = "Error while sending email: " + ex.Message;
+            }
+
+            return View();
+        }
+
+        public ActionResult RejectEmail()
+        {
+            try
+            {
+
+                string toEmail = "prasadmhasal@gmail.com";
+                string subject = "Test Email from ASP.NET MVC";
+                string body = $"Hii student you are addmited in our school your portal UserName :   And Password ";
+
+
+                var fromAddress = new MailAddress("prasadmhasal@gmail.com", "Prasad");
+                var toAddress = new MailAddress(toEmail);
+                string fromPassword = "fxjuqdrhzmmeksyq";
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+
+
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+
+                    smtp.Send(message);
+                }
+
+                ViewBag.EmailStatus = "Email sent successfully!";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.EmailStatus = "Error while sending email: " + ex.Message;
+            }
+
+            return View();
+        }
 
 
         public IActionResult AddLabrarian() 

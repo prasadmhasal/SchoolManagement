@@ -33,13 +33,9 @@
                                 <td>@a.Subject</td>
                                 <td>@a.Reason</td>
                                 <td>
-                                    <a asp-controller="Admin" asp-action="LeaveStatus" asp-route-id="@a.TeacherId" asp-route-status="Approve">
+                                    <input type="button" class="btn btn-warning btn-rounded btn-fw" value="Approve" data-Id="@a.TeacherId" data-status="Approve" onclick="changeLeaveStatus(this)" />
+                                    <input type="button" class="btn btn-danger btn-rounded btn-fw" value="Reject" data-Id="@a.TeacherId" data-status="Rejected" onclick="changeLeaveStatus(this)" />
 
-                                        <input type="button" class="btn btn-warning btn-rounded btn-fw" value="Approve"  /> 
-                                    </a>
-                                    <a asp-controller="Admin" asp-action="LeaveStatus" asp-route-id="@a.TeacherId" asp-route-status="Reject">
-                                       <input type="button" class="btn btn-danger btn-rounded btn-fw" value="Reject"  /> 
-                                    </a>
                                 </td>
 
                             </tr>
@@ -57,3 +53,27 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function changeLeaveStatus(button) {
+        var teacherId = $(button).data("id");
+        var status = $(button).data("status");
+
+        $.ajax({
+            url: '@Url.Action("LeaveStatus", "Admin")', // Adjust if necessary
+            type: 'POST',
+            data: {
+                Id: teacherId,
+                status: status
+            },
+            success: function (response) {
+                // Handle success response (optional)
+                alert('Send Email !');
+            },
+            error: function (xhr, status, error) {
+                // Handle error response (optional)
+                alert('Error updating status: ' + error);
+            }
+        });
+    }
+</script>
