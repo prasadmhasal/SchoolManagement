@@ -28,9 +28,17 @@
                                 <input type="text" class="form-control" asp-for="TecherName" id="exampleInputPassword1" placeholder="fullname">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Subject</label>
-                                <input type="text" class="form-control" asp-for="Subject" id="exampleInputPassword1" placeholder="Subject">
+                                <label for="exampleInputSubject">Subject</label>
+                                <select class="form-control" id="exampleInputSubject" asp-for="Subject">
+                                    <option value="">Select a subject</option>
+                                    <option value="Math">Math</option>
+                                    <option value="Science">Science</option>
+                                    <option value="History">History</option>
+                                    <option value="Literature">Literature</option>
+                                    <option value="Geography">Geography</option>
+                                </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Standard</label>
                                 <select class="form-control" asp-for="Standard" id="exampleInputPassword1">

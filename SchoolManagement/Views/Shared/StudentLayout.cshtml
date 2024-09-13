@@ -98,9 +98,9 @@
                             <img src="/images/faces/face28.jpg" alt="profile" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
+                            <a class="dropdown-item" asp-controller="Student" asp-action="Profile">
                                 <i class="ti-settings text-primary"></i>
-                                Settings
+                                Profile
                             </a>
                             <a class="dropdown-item" asp-controller="Admin" asp-action="SignIn">
                                 <i class="ti-power-off text-primary"></i>
@@ -323,6 +323,12 @@
                         <a class="nav-link" asp-controller="Admin" asp-action="StudentApplyRequest">
                             <i class="icon-paper menu-icon"></i>
                             <span class="menu-title">ApplyStudent</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Student" asp-action="Calendar">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">Calendar</span>
                         </a>
                     </li>
                 </ul>

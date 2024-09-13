@@ -1,0 +1,45 @@
+﻿@using SchoolManagement.Model
+@model Event
+
+@{
+    var action = Model?.Id == 0 ? "AddEvent" : "UpdateEvent";
+    if (Model == null)
+    {
+        action = "AddEvent";
+    }
+}
+
+<form asp-action="@action" method="post">
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <textarea class="form-control" id="Description" name="Description" required>@Model.Description</textarea>
+    </div>
+
+  
+
+    <div class="form-group">
+        <label for="StartDate">Start Date</label>
+        <input type="date" class="form-control" id="StartDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" required />
+    </div>
+
+
+    <div class="form-group">
+        <label for="EndDate">End Date</label>
+        <input type="date" class="form-control" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")" required />
+    </div>
+
+    <div class="form-group">
+        <label for="IsAcademic">Is Academic</label>
+        <select asp-for="IsAcademic" class="form-control">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
