@@ -294,12 +294,12 @@
             <nav class="sidebar sidebar-offcanvas " style="margin-top:5rem;" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                        <a class="nav-link" asp-controller="Teacher" asp-action="Index">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                   @*  <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <i class="icon-layout menu-icon"></i>
                             <span class="menu-title">Add</span>
@@ -312,23 +312,24 @@
                                 <li class="nav-item"> <a class="nav-link" asp-controller="Admin" asp-action="AddLabrarian">Add Labrarian</a></li>
                             </ul>
                         </div>
-                    </li>
+                    </li> *@
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="LeaveRequest">
+                        <a class="nav-link" asp-controller="Teacher" asp-action="RequestLeave">
                             <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">LeaveRequest</span>
+                            <span class="menu-title">RequestLeave</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="StudentApplyRequest">
-                            <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">ApplyStudent</span>
-                        </a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Teacher" asp-action="Calendar">
                             <i class="icon-paper menu-icon"></i>
                             <span class="menu-title">Events</span>
+                        </a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Teacher" asp-action="GetTimeTable">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">Time Table</span>
                         </a>
                     </li>
                 </ul>

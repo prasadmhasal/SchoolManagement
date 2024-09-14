@@ -1,0 +1,37 @@
+﻿@using SchoolManagement.Model
+
+@{
+    ViewBag.Title = "Event Calendar";
+    Layout = "~/Views/Shared/TeacherLayout.cshtml";
+}
+<partial name="Notification"/>
+@model TeacherLeaveRequest
+
+<form method="post">
+    <div class="form-group">
+        <label>From Date</label>
+        <input type="date" class="form-control" asp-for="StartDate">
+    </div>
+    <br />
+    <div class="form-group">
+        <label>To Date</label>
+        <input type="date" class="form-control" asp-for="EndDate">
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Subject</label>
+        <input type="text" class="form-control" asp-for="Subject" placeholder="Subject..">
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-12">
+            <label>Reason</label>
+            <textarea class="form-control" id="" cols="30" rows="10" asp-for="Reason" placeholder="Write your Reason here.."></textarea>
+        </div>
+    </div>
+    <br />
+    <input type="submit" value="Submit" class="btn btn-primary" />
+</form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>

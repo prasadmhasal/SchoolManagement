@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolManagement.Model;
+using System.Text;
 
 namespace SchoolManagement.Controllers
 {
@@ -23,11 +24,12 @@ namespace SchoolManagement.Controllers
         [HttpGet]
         public IActionResult TeacherProfile(AddTeacher e)
         {
-
+            
             AddTeacher empList = new AddTeacher();
             var username = HttpContext.Session.GetString("UserName");
             string url = $"https://localhost:44379/api/Teacher/TeacherProfile/{username}";
             HttpResponseMessage response = client.GetAsync(url).Result;
+            
             if (response.IsSuccessStatusCode)
             {
                 var jsondata = response.Content.ReadAsStringAsync().Result;
@@ -35,6 +37,7 @@ namespace SchoolManagement.Controllers
                 if (obj != null)
                 {
                     empList = obj;
+                    HttpContext.Session.SetString("Standard", empList.Standard);
                 }
             }
             return View(empList);
@@ -69,6 +72,43 @@ namespace SchoolManagement.Controllers
             });
 
             return Json(calendarEvents);
+        }
+
+        public ActionResult RequestLeave()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult RequestLeave(TeacherLeaveRequest e)
+        {
+            var UserName  = HttpContext.Session.GetString("UserName");
+            var Standard = HttpContext.Session.GetString("Standard");
+            e.UserName = UserName;
+            e.Standard = Standard;
+            string url = "https://localhost:44379/api/Teacher/RequestLeave";
+            var jsondata = JsonConvert.SerializeObject(e);
+            StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["LeaveEmail"] = "Request Send Successfully";
+                return RedirectToAction("RequestLeave");
+            }
+            return View();
+        }
+
+        public IActionResult GetTimeTable()
+        {
+            List<Timetable> teach = new List<Timetable>();
+
+            string url = "https://localhost:44379/api/Admin/GetTimeTable";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = response.Content.ReadAsStringAsync().Result;
+                teach = JsonConvert.DeserializeObject<List<Timetable>>(jsondata);
+            }
+            return View(teach);
         }
     }
 }

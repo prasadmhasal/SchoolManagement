@@ -1,0 +1,64 @@
+﻿@using SchoolManagement.Model
+@{
+    ViewBag.Title = "Event Calendar";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+
+@model List<Timetable>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Schedule</title>
+    @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
+    <link href="~/assets/stylesheet.css" rel="stylesheet" />
+</head>
+<body>
+
+    <header class="text-center my-5">
+        <h1 class="display-5">Weekly Schedule</h1>
+    </header>
+
+    <div class="container timetable">
+        <!-- Time Column -->
+        @for (int hour = 9; hour <= 18; hour++)
+        {
+            <div class="time-column">@hour:00</div>
+        }
+
+        <!-- Day Headers -->
+        <div class="day-header">Monday</div>
+        <div class="day-header">Tuesday</div>
+        <div class="day-header">Wednesday</div>
+        <div class="day-header">Thursday</div>
+        <div class="day-header">Friday</div>
+
+        <!-- Events -->
+        @foreach (var item in Model)
+        {
+            var gridColumn = item.Day switch
+            {
+                "Monday" => 2,
+                "Tuesday" => 3,
+                "Wednesday" => 4,
+                "Thursday" => 5,
+                "Friday" => 6,
+                _ => 0
+            };
+
+            var startHour = item.StartTime.Hour - 8;
+            var endHour = item.EndTime.Hour - 8;
+
+
+            <div class="event" style="grid-column: @gridColumn; grid-row: @startHour / @endHour;">
+                @item.StartTime - @item.EndTime<br>@item.Subject
+            </div>
+        }
+    </div>
+
+    @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> *@
+</body>
+</html>

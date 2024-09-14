@@ -15,6 +15,7 @@
                     <thead>
                         <tr>
                             <th>Staff Name</th>
+                            <th>Standard</th>
                             <th>Start Date</th>
                             <th>End Date </th>
                             <th>Subject</th>
@@ -28,13 +29,14 @@
                         <tbody>
                             <tr>
                                 <td>@a.UserName</td>
+                                <td>@a.Standard</td>
                                 <td>@a.StartDate</td>
                                 <td>@a.EndDate</td>
                                 <td>@a.Subject</td>
                                 <td>@a.Reason</td>
                                 <td>
-                                    <input type="button" class="btn btn-warning btn-rounded btn-fw" value="Approve" data-Id="@a.TeacherId" data-status="Approve" onclick="changeLeaveStatus(this)" />
-                                    <input type="button" class="btn btn-danger btn-rounded btn-fw" value="Reject" data-Id="@a.TeacherId" data-status="Rejected" onclick="changeLeaveStatus(this)" />
+                                    <input type="button" class="btn btn-warning btn-rounded btn-fw" value="Approve" data-Id="@a.LeaveRequestId" data-status="Approve" onclick="changeLeaveStatus(this)" />
+                                    <input type="button" class="btn btn-danger btn-rounded btn-fw" value="Reject" data-Id="@a.LeaveRequestId" data-status="Rejected" onclick="changeLeaveStatus(this)" />
 
                                 </td>
 

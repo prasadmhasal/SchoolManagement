@@ -69,7 +69,19 @@ namespace SchoolManagement.Controllers
 
             return Json(calendarEvents);
         }
+        public IActionResult GetTimeTable()
+        {
+            List<Timetable> teach = new List<Timetable>();
 
+            string url = "https://localhost:44379/api/Admin/GetTimeTable";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = response.Content.ReadAsStringAsync().Result;
+                teach = JsonConvert.DeserializeObject<List<Timetable>>(jsondata);
+            }
+            return View(teach);
+        }
 
     }
 }

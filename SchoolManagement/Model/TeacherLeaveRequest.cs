@@ -11,9 +11,9 @@ namespace SchoolManagement.Model
         public int LeaveRequestId { get; set; }
 
         [Required]
-        public int TeacherId { get; set; }
 
         public string UserName { get; set; }
+        public string Standard { get; set; }
 
         [Required]
         public string StartDate { get; set; }
