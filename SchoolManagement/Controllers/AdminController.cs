@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.Extensions.Logging;
+using System.Xml;
+using Azure;
+using System.Diagnostics;
 
 namespace SchoolManagement.Controllers
 {
@@ -541,6 +544,79 @@ namespace SchoolManagement.Controllers
 
             return BadRequest();
         }
+
+        public IActionResult AddTimetable()
+        {
+            return View();
+
+        }
+        [HttpPost]
+        public IActionResult AddTimetable(Timetable tt)
+        {
+          
+            string url = "https://localhost:44379/api/Admin/AddTimeTable";
+            var jsondata = JsonConvert.SerializeObject(tt);
+            StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Msg"] = "TimeTable Added Successfully";
+                return RedirectToAction("AddTimetable");
+            }
+            else
+            {
+                TempData["Msg"] = "Couldn't add Timetable please try again";
+                return View();
+            }
+        }
+        public IActionResult GetTimeTable()
+        {
+            List<Timetable> teach = new List<Timetable>();
+
+            string url = "https://localhost:44379/api/Admin/GetTimeTable";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = response.Content.ReadAsStringAsync().Result;
+                teach = JsonConvert.DeserializeObject<List<Timetable>>(jsondata);
+            }
+            return View(teach);
+        }
+
+
+        [HttpGet]
+        public JsonResult FetchSubjects()
+        {
+            List<Subject> subjects = new List<Subject>();
+            string url = "https://localhost:44379/api/Admin/FetchSubject";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = response.Content.ReadAsStringAsync().Result;
+                subjects = JsonConvert.DeserializeObject<List<Subject>>(jsondata);
+            }
+
+            return Json(subjects);
+        }
+
+
+        [HttpGet]
+        public JsonResult FetchClass()
+        {
+            List<AddTeacher> Class = new List<AddTeacher>();
+            string url = "https://localhost:44379/api/Admin/FetchClass";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = response.Content.ReadAsStringAsync().Result;
+                Class = JsonConvert.DeserializeObject<List<AddTeacher>>(jsondata);
+            }
+
+            return Json(Class);
+        }
+
 
     }
 }

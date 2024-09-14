@@ -1,0 +1,101 @@
+﻿
+@using SchoolManagement.Model
+
+@model Timetable
+
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-4">Forms</h5>
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Select Class</label>
+                            <select class="form-control" asp-for="Standard" id="FetchAllClasses">   
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Day</label>
+                            <select class="form-control" asp-for="Day">
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Start Time</label>
+                            <select class="form-control" asp-for="StartTime">
+                                <option value="09:00">09:00 </option>
+
+                                <option value="10:00">10:00 </option>
+
+                                <option value="11:00">11:00 </option>
+
+                                <option value="12:00">12:00 </option>
+
+                                <option value="13:00">13:00 </option>
+
+                                <option value="14:00">14:00 </option>
+
+                                <option value="15:00">15:00 </option>
+
+                                <option value="16:00">16:00 </option>
+
+                                <option value="17:00">17:00 </option>
+
+                                <option value="18:00">18:00 </option>
+                            </select>
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select End Time</label>
+                            <select class="form-control" asp-for="EndTime">
+                                <option value="09:00">09:00 </option>
+
+                                <option value="10:00">10:00 </option>
+
+                                <option value="11:00">11:00 </option>
+
+                                <option value="12:00">12:00 </option>
+
+                                <option value="13:00">13:00 </option>
+
+                                <option value="14:00">14:00 </option>
+
+                                <option value="15:00">15:00 </option>
+
+                                <option value="16:00">16:00 </option>
+
+                                <option value="17:00">17:00 </option>
+
+                                <option value="18:00">18:00 </option>
+                                
+                            </select>
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Subject</label>
+                            <select class="form-control" asp-for="Subject" id="GetSubjects" >
+                               
+                            </select>
+                        </div>
+
+                       
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="py-6 px-6 text-center">
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/ajax/javascript.js"></script>
