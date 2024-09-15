@@ -299,7 +299,7 @@
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                   @*  <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <i class="icon-layout menu-icon"></i>
                             <span class="menu-title">Add</span>
@@ -324,7 +324,7 @@
                             <i class="icon-paper menu-icon"></i>
                             <span class="menu-title">ApplyStudent</span>
                         </a>
-                    </li>
+                    </li> *@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Student" asp-action="Calendar">
                             <i class="icon-paper menu-icon"></i>
@@ -335,6 +335,12 @@
                         <a class="nav-link" asp-controller="Student" asp-action="GetTimeTable">
                             <i class="icon-paper menu-icon"></i>
                             <span class="menu-title">Time Table</span>
+                        </a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Student" asp-action="FeesPay">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">Fees Table</span>
                         </a>
                     </li>
                 </ul>

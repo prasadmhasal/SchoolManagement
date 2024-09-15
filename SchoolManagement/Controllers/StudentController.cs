@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SchoolManagement.Model;
+using System.Text;
 
 namespace SchoolManagement.Controllers
 {
@@ -82,6 +84,82 @@ namespace SchoolManagement.Controllers
             }
             return View(teach);
         }
+
+        public IActionResult FeesPay()
+        {
+
+            List<AddStudent> Fees = new List<AddStudent>();
+            var StudentUser = HttpContext.Session.GetString("UserName");
+            string url = $"https://localhost:44379/api/Admin/FeesPay/{StudentUser}";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = response.Content.ReadAsStringAsync().Result;
+                Fees = JsonConvert.DeserializeObject<List<AddStudent>>(jsondata);
+            }
+            return View(Fees);
+
+        }
+
+
+        [HttpPost]
+        public IActionResult InitiatePayment(string StudentUser, string Email, double Fees)
+        {
+        
+            var client = new Razorpay.Api.RazorpayClient("rzp_test_hyxzlMmdpXpNKr", "GWmkim1me8JM0XvpIucQwGCx");
+
+        
+            var paymentAmount = Fees * 100;
+
+            var options = new Dictionary<string, object>
+        {
+            { "amount", paymentAmount },
+            { "currency", "INR" },
+            { "receipt", Guid.NewGuid().ToString() },
+            { "payment_capture", 1 }
+        };
+            var order = client.Order.Create(options);
+
+           
+            return Json(new
+            {
+                key = "rzp_test_hyxzlMmdpXpNKr", 
+                amount = paymentAmount,
+                studentName = StudentUser,
+                email = Email,
+                orderId = order["id"].ToString() 
+            });
+        }
+
+        [HttpPut]
+        public IActionResult UpdateFeeStatus(string StudentUser)
+        {
+      
+            string url = $"https://localhost:44379/api/Student/UpdateFeesStatus/{StudentUser}";
+
+          
+            var jsonData = JsonConvert.SerializeObject(new { FeesStatus = "Paid" });  
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+       
+            HttpResponseMessage response = client.PutAsync(url, content).Result;  
+
+            if (response.IsSuccessStatusCode)
+            {
+               
+                // SendStudentCredentials(a.Email, a.StudentUser, a.Studentpass);
+                TempData["StudentEmailSend"] = "Email sent to student.";
+                return RedirectToAction("FeesPay");
+            }
+
+          
+            ViewBag.ErrorMessage = "Failed to update the fee status. Please try again.";
+            return View();
+        }
+
+
+
+
 
     }
 }

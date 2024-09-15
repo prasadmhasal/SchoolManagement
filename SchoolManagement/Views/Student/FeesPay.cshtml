@@ -1,0 +1,143 @@
+﻿@using SchoolManagement.Model
+@{
+
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+
+@model List<AddStudent>
+
+
+<partial name="Notification" />
+<div class="col-md-12 ">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Student Fee Payment</h4>
+            <p class="card-description">Student List</p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Admission Date</th>
+                            <th>Fees</th>
+                            <th>FessStatus</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
+                            <tr>
+                                <td>@student.StudentUser</td>
+                                <td>@student.fullname</td>
+                                <td>@student.Email</td>
+                                <td>@student.AddMisstiondate</td>
+                                <td>@student.Fees</td>
+                                <td>@student.FeesStatus</td>
+                                <td>
+                                    @if (student.FeesStatus == "Pending")
+                                    {
+                                        <button class="btn btn-success" data-username="@student.StudentUser" data-email="@student.Email" data-fees="@student.Fees" onclick="initiatePayment(this)">
+                                            Pay Fees
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <span>Fees Paid</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    function initiatePayment(button) {
+        var studentUser = $(button).data("username");
+        var email = $(button).data("email");
+        var fees = $(button).data("fees");
+
+        $.ajax({
+            url: '@Url.Action("InitiatePayment", "Student")', // Adjust if necessary
+            type: 'POST',
+            data: {
+                StudentUser: studentUser,
+                Email: email,
+                Fees: fees
+            },
+            success: function (response) {
+                // Redirect to Razorpay checkout page
+                handleRazorpayPayment(response);
+            },
+            error: function (xhr, status, error) {
+                alert('Error initiating payment: ' + error);
+            }
+        });
+    }
+
+    function handleRazorpayPayment(paymentData) {
+        var options = {
+            "key": paymentData.key,
+            "amount": paymentData.amount,
+            "currency": "INR",
+            "name": "School Name",
+            "description": "Fee Payment for " + paymentData.studentName,
+            "order_id": paymentData.orderId,
+            "handler": function (response) {
+                alert("Payment successful: " + response.razorpay_payment_id);
+
+              
+                $.ajax({
+                    url: '@Url.Action("UpdateFeeStatus", "Student")',
+                    type: 'PUT',
+                    contentType: 'application/json', 
+                    data: JSON.stringify({
+                        StudentUser: paymentData.studentName
+                    }),
+                    success: function (result) {
+                        if (result.success) {
+                            alert('Fee status updated to Paid!');
+                          
+                            location.reload(); 
+                        } else {
+                            alert(result.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error updating fee status: ' + error);
+                    }
+                });
+
+            },
+            "prefill": {
+                "name": paymentData.studentName,
+                "email": paymentData.email
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.on('payment.failed', function (response) {
+            alert("Payment failed: " + response.error.description);
+        });
+
+        rzp.open();
+    }
+
+
+</script>
+
+
+
+

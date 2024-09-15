@@ -18,8 +18,10 @@ namespace SchoolManagement.Model
 
         public string Standard { get; set; }
 
-        public string AddMisstiondate { get; set; } 
+        public string AddMisstiondate { get; set; }
+		public double Fees { get; set; }
 
+        public string FeesStatus { get; set; }
 
     }
 }

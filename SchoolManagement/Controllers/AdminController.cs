@@ -200,64 +200,60 @@ namespace SchoolManagement.Controllers
         public IActionResult AddStudent(AddStudent a)
         {
             a.AddMisstiondate = "empty";
+            a.FeesStatus = "Pending";
             string url = "https://localhost:44379/api/Admin/AddStudent";
             var jsondata = JsonConvert.SerializeObject(a);
             StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PostAsync(url, content).Result;
+
             if (response.IsSuccessStatusCode)
             {
-                
-               
-                //studentEmail();
+                // Send email to the student with their User and Password
+                SendStudentCredentials(a.Email, a.StudentUser, a.Studentpass);
+                TempData["StudentEmailSend"] = "Email Sended To Student";
+
                 return RedirectToAction("Addstudent");
             }
+
             return View();
         }
-        public ActionResult studentEmail()
+
+        public void SendStudentCredentials(string toEmail, string studentUser, string studentPass)
         {
             try
             {
-
-                string toEmail = "prasadmhasal@gmail.com";
-                string subject = "Test Email from ASP.NET MVC";
-                string body = $"Hii student you are addmited in our school your portal UserName :   And Password ";
-
-
-                var fromAddress = new MailAddress("prasadmhasal@gmail.com", "Prasad");
-                var toAddress = new MailAddress(toEmail);
-                string fromPassword = "fxjuqdrhzmmeksyq";
+                var fromEmail = new MailAddress("prasadmhasal@gmail.com", "Your Name or Organization");
+                var to = new MailAddress(toEmail);
+                var fromPassword = "fxjuqdrhzmmeksyq";  // Make sure you secure this in config
+                string subject = "Your Student Login Credentials";
+                string body = $"Dear Student, \n\nYour login credentials are as follows:\nUsername: {studentUser}\nPassword: {studentPass}\n\nPlease keep them safe.";
 
                 var smtp = new SmtpClient
                 {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
+                    Host = "smtp.gmail.com", // Example: smtp.gmail.com
+                    Port = 587, // Or 465, depending on your email provider's requirement
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                    Credentials = new NetworkCredential(fromEmail.Address, fromPassword)
                 };
 
-
-                using (var message = new MailMessage(fromAddress, toAddress)
+                using (var message = new MailMessage(fromEmail, to)
                 {
                     Subject = subject,
                     Body = body
                 })
                 {
-
                     smtp.Send(message);
                 }
-
-                ViewBag.EmailStatus = "Email sent successfully!";
             }
             catch (Exception ex)
             {
-                ViewBag.EmailStatus = "Error while sending email: " + ex.Message;
+                // Handle any error in sending email (log it)
             }
-
-            return View();
         }
 
+        
 
         public IActionResult AddTeacher()
         {
@@ -274,7 +270,8 @@ namespace SchoolManagement.Controllers
             HttpResponseMessage response = client.PostAsync(url,content).Result;
             if (response.IsSuccessStatusCode) 
             {
-                TempData["AddTeacher"] = "Successfully Added Teacher ";
+				SendStudentCredentials(t.TeacherEmail, t.TeacherUser, t.Teacherpass);
+				TempData["AddTeacher"] = "Successfully Added Teacher ";
                 return RedirectToAction("AddTeacher");
             }
             return View();
@@ -296,126 +293,84 @@ namespace SchoolManagement.Controllers
             
         }
 
-        [HttpPost]
-        public IActionResult LeaveStatus(int Id, string status )
-        {
-           
-            string url = $"https://localhost:44379/api/Admin/PostLeaveRequest/";
-            HttpResponseMessage response = client.DeleteAsync(url + Id).Result;
+		[HttpPost]
+		public IActionResult LeaveStatus(int Id, string status)
+		{
+			string url = $"https://localhost:44379/api/Admin/PostLeaveRequest/";
+			HttpResponseMessage response = client.DeleteAsync(url + Id).Result;
 
-            if (response.IsSuccessStatusCode)
-            {
-                if (status == "Approve")
-                {
-                    ApproveEmail();
-                    return RedirectToAction("LeaveRequest");
-                }
-                else if (status == "Rejected")
-                {
-                    RejectEmail();
-                }
+			if (response.IsSuccessStatusCode)
+			{
+				// Check the status and send the corresponding email
+				if (status == "Approve")
+				{
+					TempData["EmailSend"] = "Email Sended";
+					SendEmail("Approve", "prasadmhasal@gmail.com");
+				}
+				else if (status == "Rejected")
+				{
+					TempData["EmailSend"] = "Email Sended";
+					SendEmail("Rejected", "prasadmhasal@gmail.com");
+				}
 
-               
-                return RedirectToAction("LeaveRequest");
-            }
+				
+			}
 
-
-            return RedirectToAction("LeaveRequest");
-        }
-
-
-        public ActionResult ApproveEmail()
-        {
-            try
-            {
-
-                string toEmail = "prasadmhasal@gmail.com";
-                string subject = "Test Email from ASP.NET MVC";
-                string body = $"Hii student you are addmited in our school your portal UserName :   And Password ";
+			return RedirectToAction("LeaveRequest");
+		}
 
 
-                var fromAddress = new MailAddress("prasadmhasal@gmail.com", "Prasad");
-                var toAddress = new MailAddress(toEmail);
-                string fromPassword = "fxjuqdrhzmmeksyq";
+		public void SendEmail(string status, string toEmail)
+		{
+			try
+			{
+				string subject = "Leave Request " + status;
+				string body = "";
 
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
+				// Customize the email body based on approval/rejection
+				if (status == "Approve")
+				{
+					body = "Dear Student,\n\nYour leave request has been approved. We hope you return refreshed and ready to resume your work!\n\nBest Regards,\nSchool Administration";
+				}
+				else if (status == "Rejected")
+				{
+					body = "Dear Student,\n\nWe regret to inform you that your leave request has been rejected. For more details, please contact the administration.\n\nBest Regards,\nSchool Administration";
+				}
 
+				var fromAddress = new MailAddress("prasadmhasal@gmail.com", "Prasad");
+				var toAddress = new MailAddress(toEmail);
+				string fromPassword = "fxjuqdrhzmmeksyq"; // Be sure to secure this in production
 
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
+				var smtp = new SmtpClient
+				{
+					Host = "smtp.gmail.com",
+					Port = 587,
+					EnableSsl = true,
+					DeliveryMethod = SmtpDeliveryMethod.Network,
+					UseDefaultCredentials = false,
+					Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+				};
 
-                    smtp.Send(message);
-                }
+				using (var message = new MailMessage(fromAddress, toAddress)
+				{
+					Subject = subject,
+					Body = body
+				})
+				{
+					smtp.Send(message);
+				}
 
-                ViewBag.EmailStatus = "Email sent successfully!";
-            }
-            catch (Exception ex)
-            {
-                ViewBag.EmailStatus = "Error while sending email: " + ex.Message;
-            }
-
-            return View();
-        }
-
-        public ActionResult RejectEmail()
-        {
-            try
-            {
-
-                string toEmail = "prasadmhasal@gmail.com";
-                string subject = "Test Email from ASP.NET MVC";
-                string body = $"Hii student you are addmited in our school your portal UserName :   And Password ";
-
-
-                var fromAddress = new MailAddress("prasadmhasal@gmail.com", "Prasad");
-                var toAddress = new MailAddress(toEmail);
-                string fromPassword = "fxjuqdrhzmmeksyq";
-
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
+				ViewBag.EmailStatus = "Email sent successfully!";
+			}
+			catch (Exception ex)
+			{
+				ViewBag.EmailStatus = "Error while sending email: " + ex.Message;
+			}
+		}
 
 
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
 
-                    smtp.Send(message);
-                }
-
-                ViewBag.EmailStatus = "Email sent successfully!";
-            }
-            catch (Exception ex)
-            {
-                ViewBag.EmailStatus = "Error while sending email: " + ex.Message;
-            }
-
-            return View();
-        }
-
-
-        public IActionResult AddLabrarian() 
+		public IActionResult AddLabrarian() 
         { 
             return View();
         }

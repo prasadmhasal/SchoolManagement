@@ -7,12 +7,12 @@
 	</script>
 
 }
-@if (TempData["AddTeacher"] != null)
+@if (TempData["EmailSend"] != null)
 {
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script>
-		toastr.success('@TempData["AddTeacher"]')
+		toastr.success('@TempData["EmailSend"]')
 	</script>
 
 }
@@ -61,6 +61,15 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script>
 		toastr.success('@TempData["LeaveEmail"]')
+	</script>
+
+}
+@if (TempData["StudentEmailSend"] != null)
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script>
+		toastr.success('@TempData["StudentEmailSend"]')
 	</script>
 
 }
