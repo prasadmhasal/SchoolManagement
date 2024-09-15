@@ -110,5 +110,95 @@ namespace SchoolManagement.Controllers
             }
             return View(teach);
         }
+
+
+        [HttpGet]
+        public IActionResult AddAttendance()
+        {
+            List<AddStudent> emps = new List<AddStudent>();
+           var Standard = HttpContext.Session.GetString("Standard");
+            string url = $"https://localhost:44379/api/Teacher/GetAttendance/{Standard}";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = response.Content.ReadAsStringAsync().Result;
+                var obj = JsonConvert.DeserializeObject<List<AddStudent>>(jsondata);
+                if (obj != null)
+                {
+                    emps = obj;
+                    return View(emps); //Added this line
+                }
+            }
+
+            return View(emps);
+        }
+
+        [HttpPost]
+        public IActionResult AddAttendance(string[] Attendance)
+        {
+            List<Attendance> attendanceList = new List<Attendance>();
+
+            using (HttpClient client = new HttpClient())
+            {
+                foreach (var studentId in Attendance)
+                {
+                  
+                    var getUrl = $"https://localhost:44379/api/Teacher/GetStudentById/{studentId}";
+
+                    
+                    HttpResponseMessage getResponse = client.GetAsync(getUrl).Result;
+
+                    if (getResponse.IsSuccessStatusCode)
+                    {
+                        
+                        var jsonData = getResponse.Content.ReadAsStringAsync().Result;
+                        var student = JsonConvert.DeserializeObject<AddStudent>(jsonData);
+
+                        if (student != null)
+                        {
+                            
+                            attendanceList.Add(new Attendance
+                            {
+                                StudentId = student.StudentId,
+                                FullName = student.fullname,
+                                Standard = student.Standard,
+                                Date = DateTime.Now.ToString("dd-MM-yyyy"),
+                                IsPresent = true 
+                            });
+                        }
+                        TempData["Attendance"] = $"All Attendance Marked.";
+                    }
+                    else
+                    {
+                        
+                        TempData["Message"] = $"Error fetching student with ID {studentId}.";
+                        return View();
+                    }
+                  }
+
+          
+                string postUrl = "https://localhost:44379/api/Teacher/AssignAttendance";
+                var jsondata = JsonConvert.SerializeObject(attendanceList);
+                StringContent content = new StringContent(jsondata, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage postResponse = client.PostAsync(postUrl, content).Result;
+
+                if (postResponse.IsSuccessStatusCode)
+                {
+                    TempData["Message"] = "Attendance submitted successfully!";
+                    return RedirectToAction("AddAttendance");
+                }
+                else
+                {
+                    TempData["Message"] = "Error submitting attendance.";
+                    return View();
+                }
+            }
+        }
+
+
+
+
+
     }
 }

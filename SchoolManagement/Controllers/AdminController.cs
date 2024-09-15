@@ -72,7 +72,7 @@ namespace SchoolManagement.Controllers
                     HttpContext.Session.SetString("UserName", userData.UserName);
                     HttpContext.Session.SetString("Urole", userData.Urole);
                     
-                    return RedirectToAction("Index", "Teacher");
+                    return RedirectToAction("TeacherProfile", "Teacher");
                 }
                 else if (userData.Urole == "Admin")
                 {
